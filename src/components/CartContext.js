@@ -16,7 +16,7 @@ const CartContext = ({children}) =>{
     const resumenCompra = () =>{
         let subtotal = 0
         let preciototal = 0
-        productosCarrito.forEach((element)=>{
+        productosCarrito.length <= 0 ? setPrecioTotal(0) : productosCarrito.forEach((element)=>{
             subtotal = parseFloat(element.price) * parseFloat(element.cantidad)
             preciototal += subtotal
             setPrecioTotal(preciototal.toFixed(2))

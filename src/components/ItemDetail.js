@@ -10,7 +10,7 @@ const ItemDetail = ({item}) =>{
     const [comprar, setComprar] = useState (true)
 
     const onAdd = (unidades) =>{
-    
+        console.log(`Recibido del hijo ${unidades} unidades`)
         addItem({...item, cantidad: unidades})
         setComprar(false)       
     }
@@ -21,7 +21,7 @@ const ItemDetail = ({item}) =>{
             <p>{`Id: ${item.id}`}</p>
             <p>{`Precio: $${item.price}`}</p>
             <p>{`Categoría: ${item.category}`}</p>
-            <p>{item.description}</p>
+            <p>{`Descripción: ${item.description}`}</p>
             <img style={style.img}src={item.image} alt=""></img>
             {comprar ? <ItemCount stock={5} initial={1} onAdd={onAdd}/> : <NavLink to="/cart"><button>Terminar compra</button></NavLink>}
         </div>

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import ItemList from './ItemlList'
 import ClipLoader from "react-spinners/ClipLoader"
 import { useParams } from 'react-router-dom'
+import {db} from '../firebase/firebase'
+import {getDocs, collection, query, where} from 'firebase/firestore'
 
 const ItemListContainer = ({greeting}) =>{
 
@@ -9,19 +11,26 @@ const ItemListContainer = ({greeting}) =>{
     const [loading, setLoading] = useState(true)
 
     let {categoryId} = useParams()
+
     useEffect(()=>{
-        setTimeout(()=>{
-        const link = categoryId ? `https://fakestoreapi.com/products/category/${categoryId}` : 'https://fakestoreapi.com/products'
-        fetch(link)
-        .then(res=>res.json())
-        .then(json=>{
-            setProductos(json)
+        loading != true && setLoading(true)
+        const prueba = categoryId 
+        ? query(collection(db, 'productos'), where('category', '==', categoryId)) 
+        : collection(db, 'productos')
+        getDocs(prueba)
+        .then(result => {
+            const lista = result.docs.map(doc => {
+                return {
+                    id: doc.id,
+                    ...doc.data(),
+                }
+            })
+            setProductos(lista)
         })
         .catch(err=>console.log(err))
         .finally(() =>{
             setLoading(false)
         })
-        }, 500)
     },[categoryId])
 
     return(
